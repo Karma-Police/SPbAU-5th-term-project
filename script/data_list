@@ -1,0 +1,5 @@
+# mus musculus
+ref /Johnny/data/input/Animalia/M.musculus/genes/Mus_musculus.GRCm38.75.dna.cleared.fa
+gtf /Johnny/data/input/Animalia/M.musculus/genes/Mus_musculus.GRCm38.75.gtf
+r1 /Johnny/data/input/Animalia/M.musculus/RNA/SRR1510027_1.fastq
+r2 /Johnny/data/input/Animalia/M.musculus/RNA/SRR1510027_2.fastq
