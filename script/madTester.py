@@ -41,19 +41,18 @@ def run_rnaQUAST(experement, output_dir):
             "-c", output_dir + "/transcripts.fasta", "-o", output_dir]()
     print("~ finished rnaQUAST")
 
-def remove_tmpdata(output_dir):
-    pass
 
 def run_experenet(experement, k, output_dir):
     if "madTester" not in output_dir:
         raise RuntimeError("Bad output_dir: " + output_dir)
-    rmcmd = local["rm"]
-    rmcmd["-rf", output_dir]()
+    if os.path.isdir(output_dir):
+        print("Skipping experement " + experement.name 
+                + " with k-mer size = " + str(k) + " cause it is already done")
+        return
     createdirs(output_dir)
     print("Evaluating experement " + experement.name + " with k-mer size = " + str(k))
     run_rnaSPAdes(experement, k, output_dir)
     run_rnaQUAST(experement, output_dir)
-    remove_tmpdata(output_dir)
     print("Done!") 
     
 
