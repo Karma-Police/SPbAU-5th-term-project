@@ -7,7 +7,7 @@ SPbAU 5th term project on bioinformatics
 python3 ./madTester.py [PATH TO DATA_LIST FILE] [(optional)PATH_TO_OUTPUT_DIR]
 ```
 <h3> Data_list format </h3>
-<p> The data_list file consists of several tests. Each test is given is described by exactly 5 lines:</p>
+<p> The data_list file consists of several tests. Each test is described by exactly 5 lines:</p>
 <ol>
 <li/> Name of the test <pre># mus_musculus</pre>
 <li/> Path to reference genome <pre> ref: /mydata/genome/refgenome.fa</pre>
