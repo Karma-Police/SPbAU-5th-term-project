@@ -2,7 +2,7 @@
 SPbAU 5th term project on bioinformatics
 
 <h3> How to use? </h3>
-<p> Run madTester.py (Python 3 required) with "data list" as first argument. You can also provide an output directory as the second argument. </p>
+<p> Run madTester.py (Python 3 is required) with "data list" as first argument. You can also provide an output directory as the second argument. </p>
 ```
 python3 ./madTester.py [PATH TO DATA_LIST FILE] [(optional)PATH_TO_OUTPUT_DIR]
 ```
