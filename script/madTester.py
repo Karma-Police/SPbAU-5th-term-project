@@ -2,6 +2,7 @@ import sys
 sys.path.append("/home/mnikonov/.local/lib/python3.5/site-packages")
 
 from datalist import *
+from summary import *
 from plumbum import local
 from itertools import zip_longest
 import os
@@ -19,11 +20,18 @@ def createdirs(pathdir):
     if not os.path.exists(pathdir):
         os.makedirs(pathdir)
 
-def test(experement, output_dir):
+def test(experement, output_dir, summary):
     createdirs(output_dir)
-    kvals = [55, 61]
+    kvals = [47, 49, 51, 53, 55, 57, 59, 61, 63]
     for k in kvals:
-        run_experenet(experement, k, output_dir + "/" + experement.name + "_" + str(k))
+        experement_dir = output_dir + "/" + experement.name + "_" + str(k);
+        run_experenet(experement, k, experement_dir)
+        print("~~ saving report")
+        f = open(experement_dir + "/short_report.txt", "r")
+        summary.addrep(experement.name, k, f)
+        f.close()
+        print("~~ saved")
+
 
 def run_rnaSPAdes(experement, k, output_dir):
     print("~ running SPAdes on " + experement.name);
@@ -62,8 +70,14 @@ def main(args):
     output_dir += "/madTester" # protection form accidental deletion of unrelated data
     try:
         mad_data = TestData(args[1])
+        summary = Summary()
         for exp in mad_data.experements:
-            test(exp, output_dir)
+            test(exp, output_dir, summary)
+        print("Saving results in summary.html")
+        f = open(output_dir + "/summary.html", "w")
+        f.write(summary.tohtml().tostring())
+        f.close()
+        print("Done.")
     except DataListExc as datalist_exception:
         print("Invalide DATA_LIST format!")
         print(datalist_exception)
