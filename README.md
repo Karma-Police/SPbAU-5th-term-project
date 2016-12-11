@@ -16,3 +16,7 @@ python3 ./madTester.py [PATH TO DATA_LIST FILE] [(optional)PATH_TO_OUTPUT_DIR]
 <li/> Path to right reads separated by &amp; <pre>r2: /mydata/genome/reads1-2.fastq&amp;/mydata/genome/reads2-2.fastq</pre>
 </ol>
 <p>Check the example in "scripts" directory.</p>
+
+<h3> Results </h3>
+<p> Script provides results as a .html file: <b>[output_dir]/madTester/summary.html</b></p>
+<p> For each test rnaQUAST output is saved in <b>[output_dir]/madTester/TESTNAME_KVAL</b></p>
