@@ -6,6 +6,7 @@ from summary import *
 from plumbum import local
 from itertools import zip_longest
 import os
+import shutil
 
 def show_usage():
     print("MadTester v0.1")
@@ -49,13 +50,16 @@ def run_rnaQUAST(experement, output_dir):
             "-c", output_dir + "/transcripts.fasta", "-o", output_dir]()
     print("~ finished rnaQUAST")
 
-def clean_up(ouput_dir):
+def clean_up(output_dir):
     if "madTester" not in output_dir:
         raise RuntimeError("Bad output_dir: " + output_dir)
     print("~ Cleaning up..")
     for item in os.listdir(output_dir):
         if (item != "short_report.txt") and (item != "transcripts_output"):
-            os.remove(os.path.join(output_dir, item))
+            if os.path.isdir(os.path.join(output_dir, item)):
+                shutil.rmtree(os.path.join(output_dir, item))
+            else:
+                os.remove(os.path.join(output_dir, item))
     print("~ Done")
 
 def run_experenet(experement, k, output_dir):
