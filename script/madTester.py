@@ -21,25 +21,39 @@ def createdirs(pathdir):
     if not os.path.exists(pathdir):
         os.makedirs(pathdir)
 
+def error_correction(corrected_dir, experement):
+    if os.path.isdir(corrected_dir):
+        print("Skipping error correction for " + experement.name + " cause it is already done")
+        return
+    print("~ Performing error correction for " + experement.name);
+    rnaspades = local["rnaspades.py"]
+    args = ["--only-error-correction", "-o", corrected_dir]
+    for r1, r2 in zip_longest(experement.r1, experement.r2):
+        args.extend(["-1", r1, "-2", r2])
+    rnaspades(args)
+    print("~ finished error correction")
+
 def test(experement, output_dir, summary):
     createdirs(output_dir)
+    corrected_dir = output_dir + "/_err_" + experement.name;
+    error_correction(corrected_dir, experement)
+    corrected_yaml = corrected_dir + "/corrected/corrected.yaml";
+    if not os.path.isfile(corrected_yaml):
+        raise RuntimeError("corrected.yaml file not found")
     kvals = [39, 43, 47, 49, 51, 53, 55, 57, 59, 61, 63, 67, 71]
     for k in kvals:
         experement_dir = output_dir + "/" + experement.name + "_" + str(k);
-        run_experenet(experement, k, experement_dir)
+        run_experenet(experement, k, corrected_yaml, experement_dir)
         print("~~ saving report")
         f = open(experement_dir + "/short_report.txt", "r")
         summary.addrep(experement.name, k, f)
         f.close()
         print("~~ saved")
 
-
-def run_rnaSPAdes(experement, k, output_dir):
+def run_rnaSPAdes(experement, k, corrected_yaml, output_dir):
     print("~ running SPAdes on " + experement.name);
     rnaspades = local["rnaspades.py"]
-    args = ["-k", k, "-o", output_dir]
-    for r1, r2 in zip_longest(experement.r1, experement.r2):
-        args.extend(["-1", r1, "-2", r2])
+    args = ["-k", k, "-o", output_dir, "--dataset", corrected_yaml]
     rnaspades(args)
     print("~ SPAdes successfully finished work")
 
@@ -62,14 +76,14 @@ def clean_up(output_dir):
                 os.remove(os.path.join(output_dir, item))
     print("~ Done")
 
-def run_experenet(experement, k, output_dir):
+def run_experenet(experement, k, corrected_yaml, output_dir):
     if os.path.isdir(output_dir):
         print("Skipping experement " + experement.name 
                 + " with k-mer size = " + str(k) + " cause it is already done")
         return
     createdirs(output_dir)
     print("Evaluating experement " + experement.name + " with k-mer size = " + str(k))
-    run_rnaSPAdes(experement, k, output_dir)
+    run_rnaSPAdes(experement, k, corrected_yaml, output_dir)
     run_rnaQUAST(experement, output_dir)
     clean_up(output_dir)
     print("Done!") 
