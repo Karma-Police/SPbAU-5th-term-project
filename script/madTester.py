@@ -53,7 +53,7 @@ def test(experement, output_dir, summary):
 def run_rnaSPAdes(experement, k, corrected_yaml, output_dir):
     print("~ running SPAdes on " + experement.name);
     rnaspades = local["rnaspades.py"]
-    args = ["-k", k, "-o", output_dir, "--dataset", corrected_yaml]
+    args = ["--only-assembler", "-k", k, "-o", output_dir, "--dataset", corrected_yaml]
     rnaspades(args)
     print("~ SPAdes successfully finished work")
 
